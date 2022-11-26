@@ -154,16 +154,15 @@ class AlignedDataset(BaseDataset):
         orig_height = round(info["orig_height"])
         orig_width = round(info["orig_width"])
         
-        mask = np.zeros(
-            (len(info["annotations"]), orig_width, orig_height), dtype=np.uint8
-        )
+        mask = np.zeros((len(info["annotations"]), orig_width, orig_height), dtype=np.uint8)
+        
         labels = []
         for m, (annotation, label) in enumerate(
             zip(info["annotations"], info["labels"])
         ):
-            sub_mask = self.rle_decode(
-                annotation, (info["orig_height"], info["orig_width"])
-            )
+            #sub_mask = self.rle_decode(annotation, (info["orig_height"], info["orig_width"]))
+            sub_mask = self.rle_decode(annotation, (info["orig_width"],info["orig_height"]))###################
+            
             sub_mask = Image.fromarray(sub_mask)
             #sub_mask = sub_mask.resize((self.width, self.height), resample=Image.BICUBIC)
             mask[m, :, :] = sub_mask
