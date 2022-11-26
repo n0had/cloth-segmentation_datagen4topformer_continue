@@ -60,8 +60,8 @@ def training_loop(opt):
     custom_dataloader.printTensorSizes(10)
     custom_dataloader.printTensorSizes(27)
     savePath = "/content/drive/MyDrive/tapmobileTestProj2/mmseg_clothes_datagen/try1"
-    custom_dataloader.saveImagePair(10, savePath, True)
-    custom_dataloader.saveImagePair(27, savePath, False)
+    custom_dataloader.callSaveImagePair(10, savePath, True)
+    custom_dataloader.callSaveImagePair(27, savePath, False)
     
 
 if __name__ == "__main__":
