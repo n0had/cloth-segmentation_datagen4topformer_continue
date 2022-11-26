@@ -238,7 +238,7 @@ class AlignedDataset(BaseDataset):
         image_name = "iMaterialist_"+mid_str+str(index).zfill(8)
         
         target_arr = target_tensor.cpu().numpy()
-        target_img = Image.fromarray(np.uint8(output_arr/3 * 255) , 'L')
+        target_img = Image.fromarray(np.uint8(target_arr/3 * 255) , 'L')
         
         #output_image
         img.save(os.path.join(savePath_image, image_name+'.jpg'))
