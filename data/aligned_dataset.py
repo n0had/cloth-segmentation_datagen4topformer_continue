@@ -192,7 +192,7 @@ class AlignedDataset(BaseDataset):
             new_labels.append(0)
             new_masks.append(mask[0, :, :])
 
-        nmx = np.zeros((len(new_masks), self.width, self.height), dtype=np.uint8)
+        nmx = np.zeros((len(new_masks), orig_width, orig_height), dtype=np.uint8)
         for i, n in enumerate(new_masks):
             nmx[i, :, :] = n
 
