@@ -349,6 +349,13 @@ class AlignedDataset(BaseDataset):
         Returns numpy array according to the shape, 1 - mask, 0 - background
         """
         shape = (shape[1], shape[0])
+        
+        string0 = f'{shape[0]:.5f}'
+        string1 = f'{shape[1]:.5f}'
+        print("\n\n")
+        print("string0="+string0+", string1="+string1)
+        print("\n\n")
+        
         s = mask_rle.split()
         # gets starts & lengths 1d arrays
         starts, lengths = [np.asarray(x, dtype=int) for x in (s[0::2], s[1::2])]
