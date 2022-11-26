@@ -27,6 +27,9 @@ class CustomDatasetDataLoader(BaseDataLoader):
             num_workers=int(opt.nThreads),
             pin_memory=True)
         
+    def callSaveAllImagePairs(self, savePath):
+        self.dataset.saveAllImagePairs(savePath)
+        
     def callSaveImagePair(self, index, savePath, isVal):
         self.dataset.saveImagePair(index, savePath, isVal)
         
