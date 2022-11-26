@@ -343,7 +343,7 @@ class AlignedDataset(BaseDataset):
         output_vec=output_arr.reshape(-1)
         print(np.amax(output_vec))
         print("\n target min")
-        print(np.amix(output_vec))
+        print(np.amin(output_vec))
         
     def __len__(self):
         return len(self.image_info)
