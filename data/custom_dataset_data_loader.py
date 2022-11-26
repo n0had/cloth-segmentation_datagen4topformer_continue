@@ -28,7 +28,7 @@ class CustomDatasetDataLoader(BaseDataLoader):
             pin_memory=True)
         
     def callSaveImagePair(self, index, savePath, isVal):
-        self.dataset.saveImagePair(index, savePath, isVal):
+        self.dataset.saveImagePair(index, savePath, isVal)
         
     def printTensorSizes(self, index):
         self.dataset.printTargetTensorDimensions(index)
