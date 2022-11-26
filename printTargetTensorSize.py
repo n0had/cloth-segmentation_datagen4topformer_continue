@@ -56,6 +56,8 @@ def training_loop(opt):
     custom_dataloader = CustomDatasetDataLoader()
     custom_dataloader.initialize(opt)
     loader = custom_dataloader.get_loader()
+    
+    custom_dataloader.printTensorSizes(self, index)
 
 
 if __name__ == "__main__":
