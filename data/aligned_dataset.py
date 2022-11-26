@@ -147,12 +147,15 @@ class AlignedDataset(BaseDataset):
         idx = index
         img_path = self.image_info[idx]["image_path"]
         img = Image.open(img_path).convert("RGB")
-        img = img.resize((self.width, self.height), resample=Image.BICUBIC)
+        #img = img.resize((self.width, self.height), resample=Image.BICUBIC)
         image_tensor = self.transform_rgb(img)
 
         info = self.image_info[idx]
+        orig_height = round(info["orig_height"])
+        orig_width = round(info["orig_width"])
+        
         mask = np.zeros(
-            (len(info["annotations"]), self.width, self.height), dtype=np.uint8
+            (len(info["annotations"]), orig_width, orig_height), dtype=np.uint8
         )
         labels = []
         for m, (annotation, label) in enumerate(
@@ -162,8 +165,7 @@ class AlignedDataset(BaseDataset):
                 annotation, (info["orig_height"], info["orig_width"])
             )
             sub_mask = Image.fromarray(sub_mask)
-            sub_mask = sub_mask.resize(
-                (self.width, self.height), resample=Image.BICUBIC
+            #sub_mask = sub_mask.resize((self.width, self.height), resample=Image.BICUBIC
             )
             mask[m, :, :] = sub_mask
             labels.append(int(label) + 1)
@@ -200,10 +202,10 @@ class AlignedDataset(BaseDataset):
         labels = torch.as_tensor(new_labels, dtype=torch.int64)
         masks = torch.as_tensor(nmx, dtype=torch.uint8)
 
-        final_label = np.zeros((self.width, self.height), dtype=np.uint8)
-        first_channel = np.zeros((self.width, self.height), dtype=np.uint8)
-        second_channel = np.zeros((self.width, self.height), dtype=np.uint8)
-        third_channel = np.zeros((self.width, self.height), dtype=np.uint8)
+        final_label = np.zeros((orig_width, orig_height), dtype=np.uint8)
+        first_channel = np.zeros((orig_width, orig_height), dtype=np.uint8)
+        second_channel = np.zeros(orig_width, orig_height), dtype=np.uint8)
+        third_channel = np.zeros((orig_width, orig_height), dtype=np.uint8)
 
         upperbody = [0, 1, 2, 3, 4, 5]
         lowerbody = [6, 7, 8]
