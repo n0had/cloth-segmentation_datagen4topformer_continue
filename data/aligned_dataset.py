@@ -141,8 +141,22 @@ class AlignedDataset(BaseDataset):
 
         return image_tensor, target_tensor
     
+    def saveAllImagePairs(self, savePath):
+        indexsaveVal = 1
+        indexsavetrain = 1
+        for curind in range(self.dataset_size):
+            if (curind%10 == 3):
+                isVal = True
+                indexsave = indexsaveVal
+                indexsaveVal = indexsaveVal+1
+            else:
+                isVal=False
+                indexsave = indexsavetrain
+                indexsavetrain = indexsavetrain+1
+            self.saveImagePair(curind, savePath, isVal, indexsave)
+    
     #def saveImagePair(self, index, saveImagePath, saveAnnotationPath):
-    def saveImagePair(self, index, savePath, isVal):
+    def saveImagePair(self, index, savePath, isVal, indexsave):
         # load images ad masks
         idx = index
         img_path = self.image_info[idx]["image_path"]
@@ -235,10 +249,10 @@ class AlignedDataset(BaseDataset):
             savePath_image = os.path.join(savePath, "images", "training") #savePath +
             savePath_annotation = os.path.join(savePath, "annotations", "training")
         #img_name = img_path
-        image_name = "iMaterialist_"+mid_str+str(index).zfill(8)
+        image_name = "iMaterialist_"+mid_str+str(indexsave).zfill(8)
         
         target_arr = target_tensor.cpu().numpy()
-        target_img = Image.fromarray(np.uint8(target_arr/3 * 255) , 'L') #/4? ########################################################
+        target_img = Image.fromarray(np.uint8(target_arr * 85) , 'L') #/4? ########################################################
         
         #output_image
         img.save(os.path.join(savePath_image, image_name+'.jpg'))
