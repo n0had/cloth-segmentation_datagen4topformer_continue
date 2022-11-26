@@ -26,6 +26,9 @@ class CustomDatasetDataLoader(BaseDataLoader):
                                  not opt.serial_batches, opt.distributed),
             num_workers=int(opt.nThreads),
             pin_memory=True)
+        
+    def printTensorSizes(self, index):
+        self.dataset.printTargetTensorDimensions(index)
 
     def get_loader(self):
         return self.dataloader
