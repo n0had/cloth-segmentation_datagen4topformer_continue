@@ -28,7 +28,7 @@ class AlignedDataset(BaseDataset):
 
         transforms_list = []
         transforms_list += [transforms.ToTensor()]
-        transforms_list += [Normalize_image(opt.mean, opt.std)]
+        #transforms_list += [Normalize_image(opt.mean, opt.std)]#############################################
         self.transform_rgb = transforms.Compose(transforms_list)
 
         self.df = pd.read_csv(self.df_path)
