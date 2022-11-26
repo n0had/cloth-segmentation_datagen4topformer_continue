@@ -165,8 +165,7 @@ class AlignedDataset(BaseDataset):
                 annotation, (info["orig_height"], info["orig_width"])
             )
             sub_mask = Image.fromarray(sub_mask)
-            #sub_mask = sub_mask.resize((self.width, self.height), resample=Image.BICUBIC
-            )
+            #sub_mask = sub_mask.resize((self.width, self.height), resample=Image.BICUBIC)
             mask[m, :, :] = sub_mask
             labels.append(int(label) + 1)
 
