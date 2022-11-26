@@ -334,6 +334,7 @@ class AlignedDataset(BaseDataset):
         print("\n target tensor")
         print(list(target_tensor.size()))
         print("\n")
+        print("\n")
         
     def __len__(self):
         return len(self.image_info)
