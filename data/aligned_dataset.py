@@ -237,12 +237,104 @@ class AlignedDataset(BaseDataset):
         #img_name = img_path
         image_name = "iMaterialist_"+mid_str+str(index).zfill(8)
         
-        output_image.save(os.path.join(savePath_image, image_name+'.jpg'))
-        output_annotation.save(os.path.join(savePath_annotation, image_name+'.png'))
+        #output_image
+        img.save(os.path.join(savePath_image, image_name+'.jpg'))
+        img.save(os.path.join(savePath_annotation, image_name+'.png'))#output_annotation.save(os.path.join(savePath_annotation, image_name+'.png'))
         #output_image.save(os.path.join(result_dir, image_name[:-4]+'_generated.png'))
 
         #return image_tensor, target_tensor
+    def printTargetTensorDimensions(self, index):
+        # load images ad masks
+        idx = index
+        img_path = self.image_info[idx]["image_path"]
+        img = Image.open(img_path).convert("RGB")
+        img = img.resize((self.width, self.height), resample=Image.BICUBIC)
+        image_tensor = self.transform_rgb(img)
 
+        info = self.image_info[idx]
+        mask = np.zeros(
+            (len(info["annotations"]), self.width, self.height), dtype=np.uint8
+        )
+        labels = []
+        for m, (annotation, label) in enumerate(
+            zip(info["annotations"], info["labels"])
+        ):
+            sub_mask = self.rle_decode(
+                annotation, (info["orig_height"], info["orig_width"])
+            )
+            sub_mask = Image.fromarray(sub_mask)
+            sub_mask = sub_mask.resize(
+                (self.width, self.height), resample=Image.BICUBIC
+            )
+            mask[m, :, :] = sub_mask
+            labels.append(int(label) + 1)
+
+        num_objs = len(labels)
+        boxes = []
+        new_labels = []
+        new_masks = []
+
+        for i in range(num_objs):
+            try:
+                pos = np.where(mask[i, :, :])
+                xmin = np.min(pos[1])
+                xmax = np.max(pos[1])
+                ymin = np.min(pos[0])
+                ymax = np.max(pos[0])
+                if abs(xmax - xmin) >= 20 and abs(ymax - ymin) >= 20:
+                    boxes.append([xmin, ymin, xmax, ymax])
+                    new_labels.append(labels[i])
+                    new_masks.append(mask[i, :, :])
+            except ValueError:
+                continue
+
+        if len(new_labels) == 0:
+            boxes.append([0, 0, 20, 20])
+            new_labels.append(0)
+            new_masks.append(mask[0, :, :])
+
+        nmx = np.zeros((len(new_masks), self.width, self.height), dtype=np.uint8)
+        for i, n in enumerate(new_masks):
+            nmx[i, :, :] = n
+
+        boxes = torch.as_tensor(boxes, dtype=torch.float32)
+        labels = torch.as_tensor(new_labels, dtype=torch.int64)
+        masks = torch.as_tensor(nmx, dtype=torch.uint8)
+
+        final_label = np.zeros((self.width, self.height), dtype=np.uint8)
+        first_channel = np.zeros((self.width, self.height), dtype=np.uint8)
+        second_channel = np.zeros((self.width, self.height), dtype=np.uint8)
+        third_channel = np.zeros((self.width, self.height), dtype=np.uint8)
+
+        upperbody = [0, 1, 2, 3, 4, 5]
+        lowerbody = [6, 7, 8]
+        wholebody = [9, 10, 11, 12]
+
+        for i in range(len(labels)):
+            if labels[i] in upperbody:
+                first_channel += new_masks[i]
+            elif labels[i] in lowerbody:
+                second_channel += new_masks[i]
+            elif labels[i] in wholebody:
+                third_channel += new_masks[i]
+
+        first_channel = (first_channel > 0).astype("uint8")
+        second_channel = (second_channel > 0).astype("uint8")
+        third_channel = (third_channel > 0).astype("uint8")
+
+        final_label = first_channel + second_channel * 2 + third_channel * 3
+        conflict_mask = (final_label <= 3).astype("uint8")
+        final_label = (conflict_mask) * final_label + (1 - conflict_mask) * 1
+        target_tensor = torch.as_tensor(final_label, dtype=torch.int64)
+        
+        print("\n")
+        print("\n image tensor")
+        print(list(image_tensor.size()))
+        print("\n")
+        print("\n target tensor")
+        print(list(target_tensor.size()))
+        print("\n")
+        
     def __len__(self):
         return len(self.image_info)
 
