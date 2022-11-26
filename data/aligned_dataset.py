@@ -230,7 +230,7 @@ class AlignedDataset(BaseDataset):
             mid_str = "val_"
             savePath_image = os.path.join(savePath, "images", "validation")
             savePath_annotation = os.path.join(savePath, "annotations", "validation")
-        else
+        else:
             mid_str = "train_"
             savePath_image = os.path.join(savePath, "images", "training") #savePath +
             savePath_annotation = os.path.join(savePath, "annotations", "training")
