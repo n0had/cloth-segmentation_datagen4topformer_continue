@@ -203,7 +203,7 @@ class AlignedDataset(BaseDataset):
 
         final_label = np.zeros((orig_width, orig_height), dtype=np.uint8)
         first_channel = np.zeros((orig_width, orig_height), dtype=np.uint8)
-        second_channel = np.zeros(orig_width, orig_height), dtype=np.uint8)
+        second_channel = np.zeros((orig_width, orig_height), dtype=np.uint8)
         third_channel = np.zeros((orig_width, orig_height), dtype=np.uint8)
 
         upperbody = [0, 1, 2, 3, 4, 5]
