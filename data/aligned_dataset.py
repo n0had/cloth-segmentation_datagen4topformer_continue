@@ -144,7 +144,7 @@ class AlignedDataset(BaseDataset):
     def saveAllImagePairs(self, savePath):
         indexsaveVal = 1
         indexsavetrain = 1
-        for curind in range(self.dataset_size):
+        for curind in range(10000): #range(self.dataset_size):
             if (curind%10 == 3):
                 isVal = True
                 indexsave = indexsaveVal
@@ -252,7 +252,7 @@ class AlignedDataset(BaseDataset):
         image_name = "iMaterialist_"+mid_str+str(indexsave).zfill(8)
         
         target_arr = target_tensor.cpu().numpy()
-        target_img = Image.fromarray(np.uint8(target_arr * 85) , 'L') #/4? ########################################################
+        target_img = Image.fromarray(np.uint8(round(target_arr)) , 'L') #/4? ######################################################## *85?
         
         #output_image
         img.save(os.path.join(savePath_image, image_name+'.jpg'))
