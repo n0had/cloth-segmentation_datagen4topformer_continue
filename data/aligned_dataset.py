@@ -144,8 +144,10 @@ class AlignedDataset(BaseDataset):
     def saveAllImagePairs(self, savePath):
         indexsaveVal = 1
         indexsavetrain = 1
-        for curind in range(10000): #range(self.dataset_size):
-            if (curind%10 == 3):
+        for curind in range(10002): #range(self.dataset_size):
+            if (curind%200 == 199):
+                print(curind+1)
+            if ((curind%123 == 3) and (indexsaveVal<3)):
                 isVal = True
                 indexsave = indexsaveVal
                 indexsaveVal = indexsaveVal+1
