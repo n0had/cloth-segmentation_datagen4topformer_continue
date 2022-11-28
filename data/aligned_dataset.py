@@ -141,6 +141,22 @@ class AlignedDataset(BaseDataset):
 
         return image_tensor, target_tensor
     
+    def debug_saveAllImagePairs(self, savePath):
+        indexsaveVal = 1
+        indexsavetrain = 1
+        for curind in range(400): #range(self.dataset_size):
+            if (curind%100 == 99):
+                print(curind+1)
+            if ((curind%123 == 3) and (indexsaveVal<3)):
+                isVal = True
+                indexsave = indexsaveVal
+                indexsaveVal = indexsaveVal+1
+            else:
+                isVal=False
+                indexsave = indexsavetrain
+                indexsavetrain = indexsavetrain+1
+            self.debug_saveImagePair(curind, savePath, isVal, indexsave)
+    
     def debug_saveImagePair(self, index, savePath, isVal, indexsave):
         # load images ad masks
         idx = index
