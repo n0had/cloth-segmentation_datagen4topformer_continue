@@ -26,10 +26,16 @@ class CustomDatasetDataLoader(BaseDataLoader):
                                  not opt.serial_batches, opt.distributed),
             num_workers=int(opt.nThreads),
             pin_memory=True)
-        
+    
+    def callSaveAllImagePairs(self, savePath):
+        self.dataset.debug_saveAllImagePairs(savePath)
+    
     def callSaveAllImagePairs(self, savePath):
         self.dataset.saveAllImagePairs(savePath)
         
+    def debug_callSaveImagePair(self, index, savePath, isVal):
+        self.debug_dataset.saveImagePair(index, savePath, isVal)
+    
     def callSaveImagePair(self, index, savePath, isVal):
         self.dataset.saveImagePair(index, savePath, isVal)
         
