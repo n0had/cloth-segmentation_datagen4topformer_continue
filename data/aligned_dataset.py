@@ -240,8 +240,8 @@ class AlignedDataset(BaseDataset):
         conflict_mask = (final_label <= 3).astype("uint8")
         final_label = (conflict_mask) * final_label + (1 - conflict_mask) * 1
         #print(type(final_label))
-        print(image_arr.shape)
-        '''image_vec=image_arr.reshape(-1)
+        print(final_label.shape)
+        '''image_vec=final_label.reshape(-1)
         image_vec_sorted = np.sort(image_vec)
         image_vec_sorted.shape
         y = image_vec_sorted.tolist()'''
