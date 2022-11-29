@@ -57,7 +57,7 @@ def training_loop(opt):
     custom_dataloader.initialize(opt)
     loader = custom_dataloader.get_loader()
 
-    savePath = "/content/drive/MyDrive/tapmobileTestProj2_continue/mmseg_clothes_datagen2/testing1"
+    savePath = "/content/drive/MyDrive/tapmobileTestProj2_continue/mmseg_clothes_datagen2/try1b"
     custom_dataloader.callSaveAllImagePairs(savePath)
     
 
