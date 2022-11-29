@@ -245,6 +245,9 @@ class AlignedDataset(BaseDataset):
         image_vec_sorted = np.sort(image_vec)
         image_vec_sorted.shape
         y = image_vec_sorted.tolist()'''
+        final_label_list.tolist()
+        final_label_set = set(final_label_list)
+        print(final_label_set)
     
     def saveAllImagePairs(self, savePath):
         indexsaveVal = 1
