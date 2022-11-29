@@ -371,6 +371,7 @@ class AlignedDataset(BaseDataset):
         final_label = first_channel + second_channel * 2 + third_channel * 3
         conflict_mask = (final_label <= 3).astype("uint8")
         final_label = (conflict_mask) * final_label + (1 - conflict_mask) * 1
+        final_label = final_label+1
         target_tensor = torch.as_tensor(final_label, dtype=torch.int64)
         
         if isVal:
