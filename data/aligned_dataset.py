@@ -144,7 +144,7 @@ class AlignedDataset(BaseDataset):
     def debug_saveAllImagePairs(self, savePath):
         indexsaveVal = 1
         indexsavetrain = 1
-        for curind in range(400): #range(self.dataset_size):
+        for curind in range(800): #range(self.dataset_size):
             if (curind%100 == 99):
                 print(curind+1)
             if ((curind%123 == 3) and (indexsaveVal<3)):
@@ -248,7 +248,29 @@ class AlignedDataset(BaseDataset):
         final_label_vec = final_label.reshape(-1)
         final_label_list = final_label_vec.tolist()
         final_label_set = set(final_label_list)
-        print(final_label_set)
+        #print(final_label_set)
+        if (final_label_set == {0,1,2,3}):
+            target_tensor = torch.as_tensor(final_label, dtype=torch.int64)
+        
+            if isVal:
+                mid_str = "val_"
+                savePath_image = os.path.join(savePath, "images", "validation")
+                savePath_annotation = os.path.join(savePath, "annotations", "validation")
+            else:
+                mid_str = "train_"
+                savePath_image = os.path.join(savePath, "images", "training") #savePath +
+                savePath_annotation = os.path.join(savePath, "annotations", "training")
+            #img_name = img_path
+            image_name = "iMaterialist_"+mid_str+str(indexsave).zfill(8)
+        
+            target_arr = target_tensor.cpu().numpy()
+            target_img = Image.fromarray(np.uint8(target_arr) , 'L') #/4? ######################################################## *85? #round(target_arr)?
+        
+            #output_image
+            img.save(os.path.join(savePath_image, image_name+'.jpg'))
+            target_img.save(os.path.join(savePath_annotation, image_name+'.png'))#output_annotation.save(os.path.join(savePath_annotation, image_name+'.png'))
+            #output_image.save(os.path.join(result_dir, image_name[:-4]+'_generated.png'))
+            
     
     def saveAllImagePairs(self, savePath):
         indexsaveVal = 1
