@@ -144,7 +144,7 @@ class AlignedDataset(BaseDataset):
     def debug_saveAllImagePairs(self, savePath):
         indexsaveVal = 1
         indexsavetrain = 1
-        for curind in range(800): #range(self.dataset_size):
+        for curind in range(802): #range(self.dataset_size):
             if (curind%100 == 99):
                 print(curind+1)
             if ((curind%123 == 3) and (indexsaveVal<3)):
